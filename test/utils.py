@@ -62,7 +62,7 @@ the heading of all of the tests (according to feature and scheme) to make the ou
 of running all of the unit tests somewhat easier to parse when they are all run at
 once.
 """
-
+import sys
 import pycbc
 import optparse
 from sys import exit as _exit
@@ -88,7 +88,7 @@ def parse_args_all_schemes(feature_str):
     _parser.add_option('--device-num','-d', action='store', type = 'int',
                        dest = 'devicenum', default=0,
                        help = 'specifies a GPU device to use for CUDA, 0 by default')
-    (_opt_list, _args) = _parser.parse_args()
+    (_opt_list, _args) = _parser.parse_args([arg for arg in sys.argv[1:] if '--cov' not in arg])
 
     # Changing the optvalues to a dict makes them easier to read
     _options = vars(_opt_list)
@@ -123,7 +123,7 @@ def parse_args_cpu_only(feature_str):
     _parser.add_option('--device-num','-d', action='store', type = 'int',
                        dest = 'devicenum', default=0,
                        help = 'specifies a GPU device to use for CUDA, 0 by default')
-    (_opt_list, _args) = _parser.parse_args()
+    (_opt_list, _args) = _parser.parse_args([arg for arg in sys.argv[1:] if '--cov' not in arg])
 
     # In this case, the only reason we parsed the arguments was to exit if we were given
     # a GPU scheme.  So if we get here we're on the CPU, and should print out our message
